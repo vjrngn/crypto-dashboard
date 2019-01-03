@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 var http = require("../utils/http");
 
-/* GET home page. */
 router.get("/", function(_, res) {
   http
     .get("/listings/latest", {
