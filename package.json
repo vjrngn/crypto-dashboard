@@ -10,9 +10,11 @@
     "cryptocurrency-icons": "^0.9.3",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "fusioncharts": "^3.13.3-sr.1",
     "http-errors": "^1.7.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "react-fusioncharts": "^3.0.0",
     "react-scripts": "2.1.2"
   },
   "scripts": {

@@ -2,6 +2,7 @@ import api from "./utils/api";
 import React, { Component } from "react";
 import Navigation from "./components/AppNav";
 import { withStyles } from "@material-ui/core/styles";
+import CurrencyChart from "./components/CurrencyChart";
 import {
   Paper,
   Table,
@@ -38,21 +39,33 @@ const styles = theme => ({
 });
 
 class App extends Component {
-  state = {
-    data: [],
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: [],
+    };
+  }
 
   componentDidMount() {
     api.fetchLatest().then(data => {
       this.setState({ data });
     });
   }
+
   render() {
     const { data } = this.state;
 
     return (
       <React.Fragment>
         <Navigation />
+        <div
+          style={{
+            marginTop: 80,
+          }}
+        >
+          <CurrencyChart data={this.state.data} />
+        </div>
         <div
           style={{
             marginTop: 80,
