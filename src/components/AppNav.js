@@ -1,8 +1,7 @@
 import React from "react";
-import SearchIcon from "@material-ui/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
 import { fade } from "@material-ui/core/styles/colorManipulator";
-import { AppBar, Input, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
 
 const styles = theme => ({
   root: {

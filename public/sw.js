@@ -93,10 +93,7 @@ self.addEventListener("fetch", event => {
     event.respondWith(
       fetch(event.request)
         .then(response => {
-          console.log("received response from server");
-
           if (!response.ok) {
-            console.log("--bad response-- returning cached data");
             return getLocalCurrencyData().then(data => {
               return new Response(JSON.stringify(data));
             });
@@ -109,8 +106,6 @@ self.addEventListener("fetch", event => {
           }
         })
         .catch(error => {
-          console.log("--bad network-- returning cached data");
-
           // network unavailable, we'll fallback to local data
           return getLocalCurrencyData().then(data => {
             return new Response(JSON.stringify(data));
