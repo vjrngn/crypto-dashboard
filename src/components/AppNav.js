@@ -17,7 +17,7 @@ const styles = theme => ({
   },
   title: {
     display: "none",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("xs")]: {
       display: "block",
     },
   },
@@ -30,7 +30,7 @@ const styles = theme => ({
     },
     marginLeft: 0,
     width: "100%",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("xs")]: {
       marginLeft: theme.spacing.unit,
       width: "auto",
     },
@@ -80,19 +80,6 @@ function AppNav({ classes }) {
           Crypto Dash
         </Typography>
         <div className={classes.grow} />
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <Input
-            placeholder="Search…"
-            disableUnderline
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-          />
-        </div>
       </Toolbar>
     </AppBar>
   );

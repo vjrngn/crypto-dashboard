@@ -43,8 +43,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    api.fetchLatest().then(data => {      
-      this.setState({ data: data || [] });
+    api.fetchLatest().then(data => {    
+      this.setState({ data });
     });
   }
 

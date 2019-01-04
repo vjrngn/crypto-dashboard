@@ -6,19 +6,40 @@ if (typeof idb === "undefined") {
 }
 
 function cacheStaticAssets() {
-  return caches.open("crypto-dash-static").then(cache => {
-    cache.addAll([
-      "http://localhost:3000/",
-      "index.html",
-      "js/idb.js",
-      "static/js/main.chunk.js",
-      "static/js/bundle.js",
-      "static/js/0.chunk.js",
-      "static/js/1.chunk.js",
-      "https://fonts.googleapis.com/icon?family=Material+Icons",
-      "https://fonts.googleapis.com/css?family=Roboto:300,400,500",
-    ]);
-  });
+  return fetch("/asset-manifest.json")
+    .then(response => response.json())
+    .then(manifest => {
+      return caches.open("crypto-dash-static").then(cache => {
+        const files = Object.keys(manifest)
+          .filter(key => {
+            return key !== "service-worker.js";
+          })
+          .map(key => {
+            return manifest[key];
+          });
+
+        cache.addAll(files);
+      });
+    })
+    .catch(error => {      
+      // asset-manifest.json only exists in production env.
+      // If we are in a dev / test env, this call will fail.
+      // Here we fail silently and revert to manually caching our files.
+      caches.open("crypto-dash-static").then(cache => {
+        cache.addAll([
+          "http://localhost:3000/",
+          "index.html",
+          "js/idb.js",
+          "http://localhost:3000/manifest.json",
+          "http://localhost:3000/favicon.png",
+          "http://localhost:3000/favicon.ico",
+          "static/js/main.chunk.js",
+          "static/js/bundle.js",
+          "static/js/0.chunk.js",
+          "static/js/1.chunk.js",
+        ]);
+      });
+    });
 }
 
 function createDb() {
@@ -36,7 +57,7 @@ function createDb() {
   });
 }
 
-function saveToDb(data) {
+function saveToDb(data) {  
   return idb.open(DB_NAME).then(db => {
     const tx = db.transaction(CURRENCIES_STORE, "readwrite");
     tx.objectStore(CURRENCIES_STORE).clear();
