@@ -32,10 +32,15 @@ const styles = theme => ({
   },
 });
 
-
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.ticker = setInterval(() => {
+      api.fetchLatest().then(data => {
+        this.setState({ data });
+      });
+    }, 5000);
 
     this.state = {
       data: [],
@@ -43,9 +48,15 @@ class App extends Component {
   }
 
   componentDidMount() {
-    api.fetchLatest().then(data => {    
+    api.fetchLatest().then(data => {
       this.setState({ data });
     });
+  }
+
+  componentWillUnmount() {
+    if (this.ticker) {
+      clearInterval(this.ticker);
+    }
   }
 
   render() {
