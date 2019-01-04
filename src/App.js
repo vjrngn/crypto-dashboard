@@ -1,16 +1,10 @@
 import api from "./utils/api";
 import React, { Component } from "react";
+import { Paper } from "@material-ui/core";
 import Navigation from "./components/AppNav";
 import { withStyles } from "@material-ui/core/styles";
 import CurrencyChart from "./components/CurrencyChart";
-import {
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-} from "@material-ui/core";
+import CurrencyTable from "./components/CurrencyTable";
 
 const styles = theme => ({
   card: {
@@ -38,6 +32,7 @@ const styles = theme => ({
   },
 });
 
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -48,8 +43,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    api.fetchLatest().then(data => {
-      this.setState({ data });
+    api.fetchLatest().then(data => {      
+      this.setState({ data: data || [] });
     });
   }
 
@@ -61,63 +56,16 @@ class App extends Component {
         <Navigation />
         <div
           style={{
-            marginTop: 80,
+            marginTop: 100,
           }}
         >
           <CurrencyChart data={this.state.data} />
-        </div>
-        <div
-          style={{
-            marginTop: 80,
-          }}
-        >
-          <Paper>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>#</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Symbol</TableCell>
-                  <TableCell>Market Cap</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Circulating Supply</TableCell>
-                  <TableCell>Volume (24h)</TableCell>
-                  <TableCell>% 24h</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data.map((item, index) => {
-                  let {
-                    price,
-                    market_cap,
-                    volume_24h,
-                    percent_change_24h,
-                  } = item.quote["USD"];
-
-                  return (
-                    <TableRow key={item.id}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{item.name}</TableCell>
-                      <TableCell>{item.symbol}</TableCell>
-                      <TableCell>{parseFloat(market_cap).toFixed(2)}</TableCell>
-                      <TableCell>$ {parseFloat(price).toFixed(2)}</TableCell>
-                      <TableCell>
-                        {parseFloat(item.circulating_supply).toFixed(2)}
-                      </TableCell>
-                      <TableCell>{parseFloat(volume_24h).toFixed(2)}</TableCell>
-                      <TableCell
-                        style={{
-                          color:
-                            Number(percent_change_24h) < 0 ? "red" : "green",
-                        }}
-                      >
-                        {parseFloat(percent_change_24h).toFixed(2)} %
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+          <Paper
+            style={{
+              overflowX: "auto",
+            }}
+          >
+            <CurrencyTable data={data} />
           </Paper>
         </div>
       </React.Fragment>

@@ -6,7 +6,7 @@ import FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
 
 ReactFC.fcRoot(FusionCharts, Column2D, FusionTheme);
 
-function dataToChart(data) {
+function dataToChart(data = []) {
   return data.map(item => {
     return {
       label: item.symbol,
@@ -15,6 +15,13 @@ function dataToChart(data) {
   });
 }
 
+const chartConfig = {
+  type: "column2d",
+  width: "100%",
+  height: "400",
+  dataFormat: "json",
+};
+
 class CurrencyChart extends React.Component {
   constructor(props) {
     super(props);
@@ -22,25 +29,18 @@ class CurrencyChart extends React.Component {
     this.state = {
       data: dataToChart(props.data),
     };
-
-    this.chartConfig = {
-      type: "column2d",
-      width: "100%",
-      height: "400",
-      dataFormat: "json",
-    };
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      data: dataToChart(nextProps.data),
+      data: dataToChart(nextProps.data || []),
     });
   }
 
   render() {
     return (
       <ReactFC
-        {...this.chartConfig}
+        {...chartConfig}
         dataSource={{
           chart: {
             caption: "Crypto Currency Prices",
